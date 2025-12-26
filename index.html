@@ -7,6 +7,130 @@
 <meta name="theme-color" content="#0f172a">
 <title>Electrolyser Calculator — Standalone (Embed Logo)</title>
 <style>
+h1{
+  font-size: 22px;
+  font-weight: 700;
+}
+
+h3{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+h4{
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+/* ===============================
+   GLOBAL BASE STYLE – STEP 1
+   =============================== */
+
+:root{
+  /* Base */
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e5e7eb;
+
+  /* Text */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+
+  /* Accent (engineering blue) */
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+
+  /* Status */
+  --ok: #16a34a;
+  --warn: #f59e0b;
+  --bad: #dc2626;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.stat .value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #020617;
+  letter-spacing: 0.2px;
+}
+
+.stat .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+}
+/* ===============================
+   STATUS COLORS – SEMANTIC
+   =============================== */
+
+/* Good / Normal */
+.text-ok { color: var(--ok); }
+.bg-ok   { background: #dcfce7; }
+
+/* Attention */
+.text-warn { color: var(--warn); }
+.bg-warn   { background: #ffedd5; }
+
+/* Critical */
+.text-crit { color: var(--crit); }
+.bg-crit   { background: #fee2e2; }
+/* ===============================
+   COMPUTED LIVE PANEL
+   =============================== */
+
+.expert-panel h4 {
+  margin-bottom: 8px;
+}
+
+.expert-panel .stat {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  border: 1px solid #e5e7eb;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.expert-panel .stat:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+}
+/* ===============================
+   TABLE READABILITY
+   =============================== */
+
+table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #374151;
+}
+
+table td {
+  font-size: 13px;
+  color: #020617;
+}
+
   :root{--bg:#f7fafc;--card:#fff;--muted:#6b7280;}
   body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0;background:var(--bg);color:#0f172a;padding:18px;}
   /* ===== MAIN PAGE WIDTH CONTROL ===== */
@@ -21,9 +145,32 @@
   .title h1{font-size:20px;margin:0}
   .title p{margin:4px 0 0 0;font-size:14px;color:#374151}
   p.lead{margin:0 0 12px;color:var(--muted)}
-  .card{background:var(--card);padding:12px;border-radius:8px;box-shadow:0 1px 3px rgba(2,6,23,0.06);margin-bottom:12px,width: 100%;box-sizing: border-box;}
+  .card{
+  background: var(--card);
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  margin-bottom: 14px;
+}
   label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-  input[type=number], input[type=text], select{width:100%;padding:8px;border:1px solid #e6e9ef;border-radius:6px;font-size:14px}
+input[type=number],
+input[type=text],
+select{
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+input:focus,
+select:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
+}
 .grid2{
   display: grid;
   grid-template-columns: 1fr;
@@ -36,10 +183,40 @@
   }
 }
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .stat{padding:10px;background:#fbfdff;border-radius:6px;border:1px solid #eef2ff;margin-bottom:8px}
-  .stat .label{font-size:12px;color:var(--muted)} .stat .value{font-weight:700;font-size:16px;margin-top:6px}
+.stat{
+  padding: 10px;
+  background: var(--accent-soft);
+  border-radius: 8px;
+  border: 1px solid #dbeafe;
+  margin-bottom: 8px;
+}
+
+.stat .label{
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.stat .value{
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 6px;
+  color: var(--text-main);
+}
   .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  button{padding:8px 10px;border-radius:6px;border:1px solid #d1d5db;background:white;cursor:pointer}
+button{
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+button:hover{
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
   table{
   width:100%;
   border-collapse:collapse;
@@ -52,6 +229,7 @@ th, td{
   white-space:nowrap;    /* stop wrapping */
 }
 
+
 /* Left-align text columns */
 th:nth-child(1),
 td:nth-child(1),
@@ -63,8 +241,8 @@ td:nth-child(3){
 }
 
 /* Fixed column widths for numeric consistency */
-th:nth-child(1), td:nth-child(1){ width:50px; }   /* El */
-th:nth-child(2), td:nth-child(2){ width:90px; }   /* Recti */
+th:nth-child(1), td:nth-child(1){ width:50px; }   /* Electrolyser */
+th:nth-child(2), td:nth-child(2){ width:90px; }   /* Rectifier */
 th:nth-child(3), td:nth-child(3){ width:90px; }   /* Plant */
 th:nth-child(4), td:nth-child(4){ width:90px; }   /* StdV5 */
 th:nth-child(5), td:nth-child(5){ width:90px; }   /* DC5 */
@@ -72,7 +250,7 @@ th:nth-child(6), td:nth-child(6){ width:90px; }   /* K */
 th:nth-child(7), td:nth-child(7){ width:90px; }   /* K@5CD */
 th:nth-child(8), td:nth-child(8){ width:90px; }   /* Prod */
 th:nth-child(9), td:nth-child(9){ width:110px; }  /* Action */
-/* Rectiformer summary table */
+/* Rectifier summary table */
 #rectiSummary table{
   table-layout: fixed;
 }
@@ -116,7 +294,7 @@ th:nth-child(9), td:nth-child(9){ width:110px; }  /* Action */
 
 .status-critical {
   background-color: #fee2e2;
-  color: #991b1b;
+  color: #;
 }
 .status-grid {
   display: grid;
@@ -131,7 +309,7 @@ th:nth-child(9), td:nth-child(9){ width:110px; }  /* Action */
   border-radius: 6px;
   font-weight: 700;
   font-size: 13px;
-  color: #fff;
+  color: #ffffff;
 }
 
 .status-ok {
@@ -143,7 +321,7 @@ th:nth-child(9), td:nth-child(9){ width:110px; }  /* Action */
 }
 
 .status-crit {
-  background: #dc2626;
+  background: #fee2e2;
 }
 
 .status-na {
@@ -423,7 +601,7 @@ table th {
   white-space: nowrap;
 }
 
-/* Recti name left aligned */
+/* Rectifier name left aligned */
 .recti-table-wrap th:first-child,
 .recti-table-wrap td:first-child{
   text-align: left;
@@ -448,6 +626,27 @@ table th {
   background: #eff6ff;
   color: #1e3a8a;
 }
+/* ===============================
+   TREND INDICATORS
+   =============================== */
+
+.trend {
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.trend-up {
+  color: #16a34a; /* green */
+}
+
+.trend-down {
+  color: #dc2626; /* red */
+}
+
+.trend-flat {
+  color: #64748b; /* gray */
+}
 
 </style>
 </head>
@@ -466,7 +665,7 @@ table th {
   </div>
 
   <div class="title">
-    <h1>Electrolyser Performance Monitoring System</h1>
+    <h1>Electrolyser Performance Monitoring System (Caustic Soda Plant)</h1>
     <p>Prepared by <strong>Akshay Aghera (CSP - Process)</strong></p>
   </div>
 </div>
@@ -620,7 +819,7 @@ table th {
       </div>
 
       <div class="card expert-only">
-  <h4>Rectiformer A..F — averages (StdV5 & DC@5 kW, filtered)</h4>
+  <h4>Rectifier A to F — averages (StdV5 & DC@5 kW, filtered)</h4>
         <div id="rectiSummary">No data</div>
       </div>
 
@@ -644,7 +843,7 @@ table th {
     <option value="DC5">DC Power @5 CD vs Electrolyser</option>
     <option value="DC3">DC Power @3 CD vs Electrolyser</option>
     <option value="DC4">DC Power @4 CD vs Electrolyser</option>
-    <option value="RECTI">Rectiformer Avg DC Power @5 CD</option>
+    <option value="RECTI">Rectifier Avg DC Power @5 CD</option>
   </select>
 <p class="note">Graphs not selected here will be hidden (data is still calculated and can be exported).</p>
 </div>
@@ -703,8 +902,8 @@ table th {
     </div>
   </div>
 
-  <div class="card expert-only" id="cardRecti">
-    <h3>Rectiformer Average DC Power @5 CD(kWh/MT) — 2D Column Graph</h3>
+  <div class="card expert-only" id="cardRectifier">
+    <h3>Rectifier Average DC Power @5 CD(kWh/MT) — 2D Column Graph</h3>
     <div class="chart-wrap">
       <svg id="rectiPlot" width="900" height="320" style="max-width:100%"></svg>
     </div>
@@ -715,14 +914,14 @@ table th {
 <script>
 // ----- maps & DOM -----
 const electrolysers = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T'];
-const rectiMap = { A:'Recti-A',B:'Recti-A',C:'Recti-A',D:'Recti-A',
-                   E:'Recti-B',F:'Recti-B',G:'Recti-B',H:'Recti-B',
-                   N:'Recti-C',I:'Recti-C',J:'Recti-C',
-                   K:'Recti-D',L:'Recti-D',M:'Recti-D',
-                   P:'Recti-E',Q:'Recti-E',R:'Recti-E',
-                   S:'Recti-F',T:'Recti-F' };
-const rectiList = ['Recti-A','Recti-B','Recti-C','Recti-D','Recti-E','Recti-F'];
-const plantMap = { 'Recti-A':'Plant-1','Recti-B':'Plant-1','Recti-C':'Plant-2','Recti-D':'Plant-2','Recti-E':'Plant-3','Recti-F':'Plant-3' };
+const rectiMap = { A:'Rectifier-A',B:'Rectifier-A',C:'Rectifier-A',D:'Rectifier-A',
+                   E:'Rectifier-B',F:'Rectifier-B',G:'Rectifier-B',H:'Rectifier-B',
+                   N:'Rectifier-C',I:'Rectifier-C',J:'Rectifier-C',
+                   K:'Rectifier-D',L:'Rectifier-D',M:'Rectifier-D',
+                   P:'Rectifier-E',Q:'Rectifier-E',R:'Rectifier-E',
+                   S:'Rectifier-F',T:'Rectifier-F' };
+const rectiList = ['Rectifier-A','Rectifier-B','Rectifier-C','Rectifier-D','Rectifier-E','Rectifier-F'];
+const plantMap = { 'Rectifier-A':'Plant-1','Rectifier-B':'Plant-1','Rectifier-C':'Plant-2','Rectifier-D':'Plant-2','Rectifier-E':'Plant-3','Rectifier-F':'Plant-3' };
 
 const selElectrolyser = document.getElementById('electrolyser');
 const generationEl = document.getElementById('generation');
@@ -774,7 +973,7 @@ const cardDCAvg = document.getElementById('cardDCAvg');
 const cardDC = document.getElementById('cardDC');
 const cardDC3 = document.getElementById('cardDC3');
 const cardDC4 = document.getElementById('cardDC4');
-const cardRecti = document.getElementById('cardRecti');
+const cardRectifier = document.getElementById('cardRectifier');
 
 let saved = {};
 try{
@@ -876,6 +1075,21 @@ const DCAvg_kW = avgV > 0
 // =====================
 // INPUT VALIDATION
 // =====================
+function trendIcon(current, previous, reverse = false) {
+  if (previous === null || previous === undefined) return '';
+
+  const delta = (current - previous) / previous;
+
+  if (Math.abs(delta) <= 0.01) {
+    return '<span class="trend trend-flat">●</span>';
+  }
+
+  const improved = reverse ? current < previous : current > previous;
+
+  return improved
+    ? '<span class="trend trend-up">▲</span>'
+    : '<span class="trend trend-down">▼</span>';
+}
 function validateInputs(inputs){
   if(inputs.KA <= 0 || inputs.KA > 16){
     alert("❌ Current (kA) must be between 0 and 16");
@@ -1006,9 +1220,9 @@ function applyDefaultsForElectrolyser(key){
   // efficiency mapping by rectiformer
   const recti = rectiMap[key];
   let effPreset = null;
-  if(recti==='Recti-A' || recti==='Recti-B') effPreset = 96;
-  else if(recti==='Recti-C' || recti==='Recti-D') effPreset = 94;
-  else if(recti==='Recti-E' || recti==='Recti-F') effPreset = 96.5;
+  if(recti==='Rectifier-A' || recti==='Rectifier-B') effPreset = 95;
+  else if(recti==='Rectifier-C' || recti==='Rectifier-D') effPreset = 94;
+  else if(recti==='Rectifire-E' || recti==='Rectifier-F') effPreset = 96.5;
   if(effPreset !== null) effEl.value = effPreset;
 
   computeLive();
@@ -1068,8 +1282,8 @@ function renderSaved(){
 </colgroup>
 <thead>
 <tr>
-  <th>El</th>
-  <th>Recti</th>
+  <th>Ele.</th>
+  <th>Rectifier</th>
   <th>Plant</th>
   <th>StdV5 (V)</th>
   <th>DC5 (kW)</th>
@@ -1096,8 +1310,14 @@ function renderSaved(){
         <td>${k}</td>
         <td>${base.recti}</td>
         <td>${base.plant}</td>
-        <td class="num">${rec.StdV5.toFixed(3)}</td>
-<td class="num">${rec.DC5_kW.toFixed(1)}</td>
+<td class="num">
+  ${rec.StdV5.toFixed(3)}
+  ${trendIcon(rec.StdV5, base.prevStdV5, true)}
+</td>
+<td class="num">
+  ${rec.DC5_kW.toFixed(1)}
+  ${trendIcon(rec.DC5_kW, base.prevDC5, true)}
+</td>
 <td class="num">${rec.K.toFixed(4)}</td>
 <td class="num">${rec.K5.toFixed(4)}</td>
 <td class="num">${rec.Production.toFixed(2)}</td>
@@ -1190,8 +1410,8 @@ Object.keys(saved).forEach(k=>{
 </colgroup>
 <thead>
 <tr>
-  <th>Recti</th>
-  <th>#El</th>
+  <th>Rectifier</th>
+  <th>Electrolyser</th>
   <th>Avg StdV5 (V)</th>
   <th>Avg DC5 (kW)</th>
 </tr>
@@ -1304,7 +1524,7 @@ function drawSingleLine(svgElem, yLabelText, data, strokeColor){
   svgElem.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*55);
   const H=300;
   svgElem.setAttribute('width',W);
   svgElem.setAttribute('height',H);
@@ -1396,7 +1616,7 @@ function drawStdV5Plot(data){
   stdvPlot.innerHTML='';
   if(!data.length) return;
 
-  const W = Math.max(550, data.length*25);
+  const W = Math.max(550, data.length*55);
   const H = 340;
   stdvPlot.setAttribute('width', W);
   stdvPlot.setAttribute('height', H);
@@ -1459,7 +1679,7 @@ function drawDC5Plot(data){
   dcPlot.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*55);
   const H=340;
   dcPlot.setAttribute('width',W);
   dcPlot.setAttribute('height',H);
@@ -1544,7 +1764,7 @@ function drawRectiPlot(buckets){
   const maxAvg=Math.max(...valid.map(a=>a.avg));
   const minAvg=Math.min(...valid.map(a=>a.avg));
 
-  const W= Math.max(500, arr.length*90);
+  const W= Math.max(500, arr.length*180);
   const H=340;
   rectiPlot.setAttribute('width',W);
   rectiPlot.setAttribute('height',H);
@@ -1622,7 +1842,7 @@ function updateGraphVisibility(){
   cardDC.style.display    = (mode==='ALL' || mode==='DC5') ? '' : 'none';
   cardDC3.style.display   = (mode==='ALL' || mode==='DC3') ? '' : 'none';
   cardDC4.style.display   = (mode==='ALL' || mode==='DC4') ? '' : 'none';
-  cardRecti.style.display = (mode==='ALL' || mode==='RECTI') ? '' : 'none';
+  cardRectifier.style.display = (mode==='ALL' || mode==='RECTIFIER') ? '' : 'none';
 }
 
 // load / delete / save
@@ -1667,6 +1887,10 @@ function saveCurrent(){
 rec.shift = shiftSelectorEl ? shiftSelectorEl.value : '-';
 rec.date = now.toISOString().slice(0,10);
 rec.timestamp = now.toISOString();
+if (saved[key]) {
+  rec.prevStdV5 = saved[key].StdV5;
+  rec.prevDC5  = saved[key].DC5_kW;
+}
   saved[key]=rec;
   renderSaved();
 renderAllElectrolyserStatus();
@@ -1679,7 +1903,7 @@ document.getElementById('deleteBtn').addEventListener('click',()=>deleteRecord(s
 document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear all saved records?')){saved={};renderSaved();}});
 
 document.getElementById('exportCsvBtn').addEventListener('click',()=>{
-  const rows=[['Electrolyser','Recti','Plant','Generation','Elements','KA','TotalV','Conc','Temp','Eff%','CD','AvgV','StdV3','StdV4','StdV5','DC3_kW','DC4_kW','DC5_kW','K_Factor','K_Factor_5CD','Production_MT_day','SavedAt']];
+  const rows=[['Electrolyser','Rectifier','Plant','Generation','Elements','KA','TotalV','Conc','Temp','Eff%','CD','AvgV','StdV3','StdV4','StdV5','DC3_kW','DC4_kW','DC5_kW','K_Factor','K_Factor_5CD','Production_MT_day','SavedAt']];
   Object.keys(saved).sort().forEach(k =>{
     const base = saved[k];
     const r = computeFromInputs({
@@ -1787,7 +2011,7 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
         <tbody>
           <tr><td>StdV5 (V)</td><td>${bestStd.k} (${bestStd.rec.StdV5.toFixed(4)})</td><td>${worstStd.k} (${worstStd.rec.StdV5.toFixed(4)})</td></tr>
           <tr><td>DC@5 (kW)</td><td>${bestDC.k} (${bestDC.rec.DC5_kW.toFixed(3)})</td><td>${worstDC.k} (${worstDC.rec.DC5_kW.toFixed(3)})</td></tr>
-          <tr><td>Rectiformer Avg DC@5</td><td>${bestRecti.recti} (${bestRecti.avg.toFixed(3)} kW)</td><td>${worstRecti.recti} (${worstRecti.avg.toFixed(3)} kW)</td></tr>
+          <tr><td>Rectifier Avg DC@5</td><td>${bestRecti.recti} (${bestRecti.avg.toFixed(3)} kW)</td><td>${worstRecti.recti} (${worstRecti.avg.toFixed(3)} kW)</td></tr>
         </tbody>
       </table>`;
   } else {
@@ -1839,7 +2063,7 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
   <p class="note">Color code on StdV5/DC5: Green = best (lowest value), Red = worst (highest value).</p>
 
   <div class="block">
-    <h2>Summary (StdV5 / DC@5 / Rectiformer)</h2>
+    <h2>Summary (StdV5 / DC@5 / Rectifier)</h2>
     ${summaryHtml}
   </div>
 
@@ -1868,7 +2092,7 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
     ${svg7}
   </div>
   <div class="block">
-    <h2>Rectiformer Average DC Power @5 CD (kWh/MT)</h2>
+    <h2>Rectifier Average DC Power @5 CD (kWh/MT)</h2>
     ${svg3}
   </div>
 </body>
@@ -1904,7 +2128,7 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
     <table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-size:11px;width:100%;">
       <thead>
         <tr>
-          <th>El</th><th>Recti</th><th>Plant</th><th>Shift</th><th>Gen</th>
+          <th>El</th><th>Rectifier</th><th>Plant</th><th>Shift</th><th>Gen</th>
           <th>Elem</th><th>KA</th><th>TotV</th>
           <th>Conc</th><th>Temp</th><th>Eff%</th>
           <th>CD</th><th>AvgV</th>
@@ -2061,10 +2285,6 @@ window.deleteRecord=deleteRecord;
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    </script>
-<script>
-if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('./service-worker.js')
@@ -2075,4 +2295,3 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
-
