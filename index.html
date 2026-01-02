@@ -131,7 +131,7 @@ table td {
   color: #020617;
 }
 
-  :root{--bg:#f7fafc;--card:#fff;--muted:#6b7280;}
+  :root{--bg:#f7fafc;--card:#fff;--muted:#6b7280;--crit: #dc2626;}
   body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0;background:var(--bg);color:#0f172a;padding:18px;}
   /* ===== MAIN PAGE WIDTH CONTROL ===== */
 .wrap{
@@ -139,11 +139,11 @@ table td {
   width: 100%;
   margin: 0 auto;
 }
-  .header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  .header{display:flex;align-items:center;gap:80px;margin-bottom:18px}
   .logo-wrap{width:200px;height:72px;display:flex;align-items:center;justify-content:flex-start}
   .title{line-height:1}
-  .title h1{font-size:20px;margin:0}
-  .title p{margin:4px 0 0 0;font-size:14px;color:#374151}
+  .title h1{font-size:25px;margin:0}
+  .title p{margin:8px 0 0 0;font-size:16px;color:#374151}
   p.lead{margin:0 0 12px;color:var(--muted)}
   .card{
   background: var(--card);
@@ -201,21 +201,22 @@ select:focus{
   font-size: 16px;
   margin-top: 6px;
   color: var(--text-main);
-}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+}  
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 button{
-  padding: 7px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: #ffffff;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+   padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+	background: #475569; color: white;
+    border: none;
+    transition: all 0.2s ease;
 }
 
 button:hover{
-  background: var(--accent-soft);
-  border-color: var(--accent);
+  transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
   table{
   width:100%;
@@ -647,6 +648,45 @@ table th {
 .trend-flat {
   color: #64748b; /* gray */
 }
+/* Add this inside your <style> tag */
+.control-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 12px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.button-row { display: flex; gap: 10px; }
+
+.btn-pro {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-generate { background: #475569; color: white; }
+.btn-export { background: #0f172a; color: white; }
+.btn-data { background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; }
+
+.btn-pro:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1)
+}
+
+.pro-input {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    padding: 0 10px;
+}
 
 </style>
 </head>
@@ -671,7 +711,6 @@ table th {
 </div>
 <div class="wrap">
   <div class="mode-status-row">
-
   <div class="card" style="margin:8px 0 16px 0;">
   <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap">
 
@@ -686,19 +725,37 @@ table th {
         Simple mode shows only key inputs & results. Expert mode shows full analysis, tables, and graphs.
       </p>
     </div>
+<div class="wrap">
+    <div class="card" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <h3 style="margin-top:0; color: #1e293b; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">📊</span> Plant Health Overview
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px;">
+            <div class="stat" style="background: #ffffff; border-left: 4px solid #64748b;">
+                <div class="label">Total Electrolyser</div>
+                <div class="value" id="health-total">19</div>
+            </div>
+            <div class="stat" style="background: #f0fdf4; border-left: 4px solid #16a34a;">
+                <div class="label" style="color: #166534;">Healthy (<3.00 V @5CD)</div>
+                <div class="value" id="health-ok">0</div>
+            </div>
+            <div class="stat" style="background: #fffbeb; border-left: 4px solid #d97706;">
+                <div class="label" style="color: #92400e;">Attention (3.0 to 3.20 V @5CD)</div>
+                <div class="value" id="health-warn">0</div>
+            </div>
+            <div class="stat" style="background: #fef2f2; border-left: 4px solid #dc2626;">
+                <div class="label" style="color: #991b1b;">Critical (> 3.20 V @5CD)</div>
+                <div class="value" id="health-crit">0</div>
+            </div>
+        </div>
 
-    <!-- ALARM PANEL -->
-    <div>
-      <label>Alarm Panel (All Electrolysers)</label>
-      <div id="statusGrid" class="status-grid"></div>
+        <div id="healthMatrix" class="status-grid" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            </div>
     </div>
+</div>
 
-  </div>
-</div>
-<div id="alarmPanel" class="status-badge status-normal">
-  🟢 Alarm: NORMAL
-</div>
-</div>
+
 <div class="wrap">
 
   <div class="card grid2">
@@ -807,7 +864,19 @@ table th {
           Saved table always shows all electrolysers.
         </p>
       </div>
+<div class="card expert-only" style="margin-top: 20px;">
+    <h3>Std Voltage @ 5 CD  (Comparison - Initial Vs Latest Value)</h3>
+    <p class="text-muted" style="font-size: 12px; margin-bottom: 15px;">
+        Comparing the 1st recorded entry against the latest entry.
+    </p>
+    
+    <div id="analysisResults" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+    </div>
 
+    <button id="runAnalysisBtn" class="btn btn-primary" style="width: 100%;">
+        Compare
+    </button>
+</div>
       <div class="card expert-only">
   <h4>Saved Electrolysers (<span id="savedCount">0</span>)</h4>
         <div id="savedList">No records yet.</div>
@@ -819,22 +888,23 @@ table th {
       </div>
 
       <div class="card expert-only">
-  <h4>Rectifier A to F — averages (StdV5 & DC@5 kW, filtered)</h4>
+  <h4>Rectifier Power</h4>
         <div id="rectiSummary">No data</div>
       </div>
 
       <div class="card expert-only">
   <h4>Export</h4>
-        <button id="exportPdfBtn">Export Graphs to PDF</button>
-        <button id="exportDataPdfBtn">Export Data (All Cells) to PDF</button>
-        <p class="note">Uses browser print dialog. When it opens, select “Save as PDF”.</p>
-      </div>
+        <button id="exportPdfBtn">Export All Graphs to PDF</button>
+        <button id="exportDataPdfBtn">Export Data (All Cells Data) to PDF</button>
+              </div>
     </div>
   </div>
 <div class="card expert-only">
   <h3>Graph Selection</h3>
-  <label>Select graph to display</label>
-  <select id="graphSelector">
+<div class="control-strip">
+        <div class="strip-group">
+            
+    <select id="graphSelector" class="pro-input">
     <option value="ALL">All graphs</option>
     <option value="STDV">StdV5 vs Electrolyser</option>
     <option value="STD3">StdV3 vs Electrolyser</option>
@@ -843,12 +913,19 @@ table th {
     <option value="DC5">DC Power @5 CD vs Electrolyser</option>
     <option value="DC3">DC Power @3 CD vs Electrolyser</option>
     <option value="DC4">DC Power @4 CD vs Electrolyser</option>
-    <option value="RECTI">Rectifier Avg DC Power @5 CD</option>
+    <option value="RECTIFIER">Rectifier Avg DC Power @5 CD</option>
   </select>
-<p class="note">Graphs not selected here will be hidden (data is still calculated and can be exported).</p>
+</div>
+<div class="strip-group">
+            
+            <div class="button-row">
+                <button id="btnGenerateGraph" class="btn-pro btn-generate">
+                    Generate Selected Graph
+                </button>
+    </div>
 </div>
   <div class="card expert-only" id="cardStdV">
-    <h3>Std V @ 5CD per Electrolyser (V) — 2D Plot</h3>
+    <h3>Std V @ 5CD per Electrolyser (V)</h3>
     <div class="chart-wrap">
       <svg id="stdvPlot" width="900" height="320" style="max-width:100%"></svg>
     </div>
@@ -858,14 +935,14 @@ table th {
   </div>
 
   <div class="card expert-only" id="cardStd3">
-    <h3>Std V @ 3CD per Electrolyser (V) — 2D Plot</h3>
+    <h3>Std V @ 3CD per Electrolyser (V)</h3>
     <div class="chart-wrap">
       <svg id="std3Plot" width="900" height="320" style="max-width:100%"></svg>
     </div>
   </div>
 
   <div class="card expert-only" id="cardStd4">
-    <h3>Std V @ 4CD per Electrolyser (V) — 2D Plot</h3>
+    <h3>Std V @ 4CD per Electrolyser (V)</h3>
     <div class="chart-wrap">
       <svg id="std4Plot" width="900" height="320" style="max-width:100%"></svg>
     </div>
@@ -879,7 +956,7 @@ table th {
 </div>
 
   <div class="card expert-only" id="cardDC">
-    <h3>DC Power @5 CD per Electrolyser (kWh/MT) — 2D Plot</h3>
+    <h3>DC Power @5 CD per Electrolyser (kWh/MT)</h3>
     <div class="chart-wrap">
       <svg id="dcPlot" width="900" height="320" style="max-width:100%"></svg>
     </div>
@@ -889,21 +966,21 @@ table th {
   </div>
 
   <div class="card expert-only" id="cardDC3">
-    <h3>DC Power @3 CD per Electrolyser (kWh/MT) — 2D Plot</h3>
+    <h3>DC Power @3 CD per Electrolyser (kWh/MT)</h3>
     <div class="chart-wrap">
       <svg id="dc3Plot" width="900" height="320" style="max-width:100%"></svg>
     </div>
   </div>
 
   <div class="card expert-only" id="cardDC4">
-    <h3>DC Power @4 CD per Electrolyser (kWh/MT) — 2D Plot</h3>
+    <h3>DC Power @4 CD per Electrolyser (kWh/MT)</h3>
     <div class="chart-wrap">
       <svg id="dc4Plot" width="900" height="320" style="max-width:100%"></svg>
     </div>
   </div>
 
   <div class="card expert-only" id="cardRectifier">
-    <h3>Rectifier Average DC Power @5 CD(kWh/MT) — 2D Column Graph</h3>
+    <h3>Rectifier Average DC Power @5 CD(kWh/MT)</h3>
     <div class="chart-wrap">
       <svg id="rectiPlot" width="900" height="320" style="max-width:100%"></svg>
     </div>
@@ -912,6 +989,114 @@ table th {
 </div>
 
 <script>
+function updatePlantHealth() {
+    const matrixContainer = document.getElementById('healthMatrix');
+    if (!matrixContainer) return;
+
+    let okCount = 0, warnCount = 0, critCount = 0;
+    matrixContainer.innerHTML = ''; 
+
+    electrolysers.forEach(id => {
+        // Find latest data from your historyData object
+        const records = historyData[id] || [];
+        const last = records[records.length - 1];
+
+        let statusClass = 'status-na';
+        if (last) {
+            const v = parseFloat(last.StdV5);
+            if (v >= 3.2) { statusClass = 'status-critical'; critCount++; }
+            else if (v >= 3.0) { statusClass = 'status-attention'; warnCount++; }
+            else { statusClass = 'status-normal'; okCount++; }
+        }
+
+        const box = document.createElement('div');
+        box.className = `status-box ${statusClass}`;
+        box.innerHTML = id;
+        matrixContainer.appendChild(box);
+    });
+
+    // Update the summary numbers at the top
+    if(document.getElementById('health-total')) {
+        document.getElementById('health-total').innerText = electrolysers.length;
+        document.getElementById('health-ok').innerText = okCount;
+        document.getElementById('health-warn').innerText = warnCount;
+        document.getElementById('health-crit').innerText = critCount;
+    }
+}
+document.getElementById('runAnalysisBtn').addEventListener('click', () => {
+    const container = document.getElementById('analysisResults');
+    container.innerHTML = ''; 
+    
+    let validUnits = 0;
+    const STABLE_THRESHOLD = 0.001; // 0.1% change is considered stable
+
+    Object.keys(historyData).sort().forEach(unit => {
+        const data = historyData[unit];
+        
+        // Requirement: Minimum 5 entries
+        if (data.length < 5) return;
+
+        validUnits++;
+
+        const firstEntry = data[0];
+        const lastEntry = data[data.length - 1];
+
+        const vFirst = firstEntry.StdV5;
+        const vLast = lastEntry.StdV5;
+        const diff = vLast - vFirst;
+        const percentChange = (diff / vFirst); // fractional change
+
+        // Define Status and Color
+        let statusText = "";
+        let colorCode = "";
+        let bgColor = "";
+
+        if (Math.abs(percentChange) <= STABLE_THRESHOLD) {
+            statusText = "STABLE";
+            colorCode = "#856404"; // Dark Yellow
+            bgColor = "#fff3cd";   // Light Yellow
+        } else if (diff < 0) {
+            statusText = "IMPROVING";
+            colorCode = "#155724"; // Dark Green
+            bgColor = "#d4edda";   // Light Green
+        } else {
+            statusText = "DEGRADING";
+            colorCode = "#721c24"; // Dark Red
+            bgColor = "#f8d7da";   // Light Red
+        }
+
+        const row = document.createElement('div');
+        row.style.cssText = `padding:15px; border-bottom:1px solid #eee; background-color: ${bgColor};`;
+        row.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <strong style="font-size:16px;">${unit}</strong><br>
+                    <span style="font-size:11px; color:#666;">Data Points: ${data.length}</span>
+                </div>
+                <div style="text-align:right;">
+                    <span style="font-weight:bold; color:${colorCode}; font-size:14px;">${statusText}</span><br>
+                    <span style="font-weight:bold; font-size:14px;">${(percentChange * 100).toFixed(2)}% Drift</span>
+                </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; font-size:12px; background:rgba(255,255,255,0.5); padding:8px; border-radius:4px;">
+                <div>
+                    <div style="color:#666;">FIRST (${firstEntry.date})</div>
+                    <div style="font-family:monospace; font-weight:bold;">${vFirst.toFixed(4)} V</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="color:#666;">LAST (${lastEntry.date})</div>
+                    <div style="font-family:monospace; font-weight:bold;">${vLast.toFixed(4)} V</div>
+                </div>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+
+    if (validUnits === 0) {
+        container.innerHTML = '<p style="padding:20px; text-align:center; color:#666;">Not enough data. At least 5 entries per unit are required.</p>';
+    }
+});
 // ----- maps & DOM -----
 const electrolysers = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T'];
 const rectiMap = { A:'Rectifier-A',B:'Rectifier-A',C:'Rectifier-A',D:'Rectifier-A',
@@ -980,6 +1165,12 @@ try{
   const raw = localStorage.getItem('electrolyser_saved_v1');
   if(raw) saved = JSON.parse(raw);
 }catch(e){console.warn(e);}
+
+let historyData = {};
+try {
+  const rawHist = localStorage.getItem('electrolyser_history_v1');
+  if(rawHist) historyData = JSON.parse(rawHist);
+} catch(e) { console.warn('History load error', e); }
 
 // populate electrolyser select (with recti/plant info)
 electrolysers.forEach(k=>{
@@ -1211,7 +1402,7 @@ function applyDefaultsForElectrolyser(key){
 
   // generation mapping
   let gen = generationEl.value;
-  if('ABCDEFGH'.includes(key)) gen='5thB+';
+  if('ABCDSEFGH'.includes(key)) gen='5thB+';
   else if('IJKL'.includes(key)) gen='4th';
   else if('MN'.includes(key)) gen='5th';
   else if('PQRST'.includes(key)) gen='6thB+';
@@ -1222,11 +1413,12 @@ function applyDefaultsForElectrolyser(key){
   let effPreset = null;
   if(recti==='Rectifier-A' || recti==='Rectifier-B') effPreset = 95;
   else if(recti==='Rectifier-C' || recti==='Rectifier-D') effPreset = 94;
-  else if(recti==='Rectifire-E' || recti==='Rectifier-F') effPreset = 96.5;
+  else if(recti==='Rectifier-E' || recti==='Rectifier-F') effPreset = 96.5;
   if(effPreset !== null) effEl.value = effPreset;
 
   computeLive();
 }
+
 function renderElectrolyserStatusGrid() {
   const grid = document.getElementById('statusGrid');
   if (!grid) return;
@@ -1273,11 +1465,11 @@ function renderSaved(){
   <col style="width:50px">
   <col style="width:90px">
   <col style="width:90px">
-  <col style="width:90px">
-  <col style="width:90px">
-  <col style="width:90px">
-  <col style="width:90px">
-  <col style="width:90px">
+  <col style="width:80px">
+  <col style="width:80px">
+  <col style="width:80px">
+  <col style="width:80px">
+  <col style="width:80px">
   <col style="width:110px">
 </colgroup>
 <thead>
@@ -1315,12 +1507,12 @@ function renderSaved(){
   ${trendIcon(rec.StdV5, base.prevStdV5, true)}
 </td>
 <td class="num">
-  ${rec.DC5_kW.toFixed(1)}
+  ${rec.DC5_kW.toFixed(0)}
   ${trendIcon(rec.DC5_kW, base.prevDC5, true)}
 </td>
-<td class="num">${rec.K.toFixed(4)}</td>
-<td class="num">${rec.K5.toFixed(4)}</td>
-<td class="num">${rec.Production.toFixed(2)}</td>
+<td class="num">${rec.K.toFixed(3)}</td>
+<td class="num">${rec.K5.toFixed(3)}</td>
+<td class="num">${rec.Production.toFixed(1)}</td>
 <td>
   <button class="btn-xs" onclick="loadRecord('${k}')">Load</button>
   <button class="btn-xs" onclick="deleteRecord('${k}')">Del</button>
@@ -1371,10 +1563,10 @@ function renderSaved(){
   const worstDC = list.reduce((a,b)=> b.rec.DC5_kW > a.rec.DC5_kW ? b : a, list[0]);
 
   bestWorstDiv.innerHTML =
-    `<div>Best StdV5 (${filter}): <strong>${bestStd.k}</strong> (${bestStd.rec.StdV5.toFixed(4)} V)</div>
-     <div>Worst StdV5 (${filter}): <strong>${worstStd.k}</strong> (${worstStd.rec.StdV5.toFixed(4)} V)</div>
-     <div style="margin-top:6px">Best DC@5 (${filter}): <strong>${bestDC.k}</strong> (${bestDC.rec.DC5_kW.toFixed(3)} kW)</div>
-     <div>Worst DC@5 (${filter}): <strong>${worstDC.k}</strong> (${worstDC.rec.DC5_kW.toFixed(3)} kW)</div>`;
+    `<div>Best StdV5 (${filter}): <strong>${bestStd.k}</strong> (${bestStd.rec.StdV5.toFixed(3)} V)</div>
+     <div>Worst StdV5 (${filter}): <strong>${worstStd.k}</strong> (${worstStd.rec.StdV5.toFixed(3)} V)</div>
+     <div style="margin-top:6px">Best DC@5 (${filter}): <strong>${bestDC.k}</strong> (${bestDC.rec.DC5_kW.toFixed(0)} kW)</div>
+     <div>Worst DC@5 (${filter}): <strong>${worstDC.k}</strong> (${worstDC.rec.DC5_kW.toFixed(0)} kW)</div>`;
 
   const rectiBuckets = {};
 rectiList.forEach(r => rectiBuckets[r] = []);
@@ -1412,8 +1604,8 @@ Object.keys(saved).forEach(k=>{
 <tr>
   <th>Rectifier</th>
   <th>Electrolyser</th>
-  <th>Avg StdV5 (V)</th>
-  <th>Avg DC5 (kW)</th>
+  <th>Avg Voltage (V)</th>
+  <th>DC Power Average (kWh/MT)</th>
 </tr>
 </thead>
 <tbody>
@@ -1423,7 +1615,7 @@ const rectiStats = rectiList
   .map(r=>{
     const arr = rectiBuckets[r] || [];
     const avg = arr.length
-      ? arr.reduce((s,x)=>s+x.DC5_kW,0)/arr.length
+      ? arr.reduce((s,x)=>s+x.DCAvg_kW,0)/arr.length
       : null;
     return { recti:r, count:arr.length, avg };
   })
@@ -1448,8 +1640,8 @@ rectiList.forEach(recti=>{
     return;
   }
 
-  const avgStd = arr.reduce((s,x)=>s+x.StdV5,0)/arr.length;
-  const avgDc  = arr.reduce((s,x)=>s+x.DC5_kW,0)/arr.length;
+  const avgStd = arr.reduce((s,x)=>s+x.avgV,0)/arr.length;
+  const avgDc  = arr.reduce((s,x)=>s+x.DCAvg_kW,0)/arr.length;
 
   let cls = 'recti-mid';
   if(avgDc === minAvg) cls = 'recti-best';
@@ -1459,8 +1651,8 @@ rectiList.forEach(recti=>{
     <tr class="${cls}">
       <td>${recti}</td>
       <td>${arr.length}</td>
-      <td>${avgStd.toFixed(4)}</td>
-      <td>${avgDc.toFixed(3)}</td>
+      <td>${avgStd.toFixed(3)}</td>
+      <td>${avgDc.toFixed(0)}</td>
     </tr>`;
 });
   rectHtml+='</tbody></table>';
@@ -1486,6 +1678,7 @@ rectiList.forEach(recti=>{
   drawRectiPlot(rectiBuckets);
 renderElectrolyserStatusGrid();
   saveToLocal();
+updatePlantHealth();
 }
 function renderAllElectrolyserStatus() {
   const grid = document.getElementById('statusGrid');
@@ -1524,7 +1717,7 @@ function drawSingleLine(svgElem, yLabelText, data, strokeColor){
   svgElem.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*54);
   const H=300;
   svgElem.setAttribute('width',W);
   svgElem.setAttribute('height',H);
@@ -1616,7 +1809,7 @@ function drawStdV5Plot(data){
   stdvPlot.innerHTML='';
   if(!data.length) return;
 
-  const W = Math.max(550, data.length*25);
+  const W = Math.max(550, data.length*54);
   const H = 340;
   stdvPlot.setAttribute('width', W);
   stdvPlot.setAttribute('height', H);
@@ -1679,7 +1872,7 @@ function drawDC5Plot(data){
   dcPlot.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*54);
   const H=340;
   dcPlot.setAttribute('width',W);
   dcPlot.setAttribute('height',H);
@@ -1764,7 +1957,7 @@ function drawRectiPlot(buckets){
   const maxAvg=Math.max(...valid.map(a=>a.avg));
   const minAvg=Math.min(...valid.map(a=>a.avg));
 
-  const W= Math.max(500, arr.length*90);
+  const W= Math.max(500, arr.length*180);
   const H=340;
   rectiPlot.setAttribute('width',W);
   rectiPlot.setAttribute('height',H);
@@ -1834,17 +2027,42 @@ function drawRectiPlot(buckets){
 }
 
 // show/hide graphs based on dropdown
-function updateGraphVisibility(){
-  const mode = graphSelectorEl.value;
-  cardStdV.style.display  = (mode==='ALL' || mode==='STDV') ? '' : 'none';
-  cardStd3.style.display  = (mode==='ALL' || mode==='STD3') ? '' : 'none';
-  cardStd4.style.display  = (mode==='ALL' || mode==='STD4') ? '' : 'none';
-  cardDC.style.display    = (mode==='ALL' || mode==='DC5') ? '' : 'none';
-  cardDC3.style.display   = (mode==='ALL' || mode==='DC3') ? '' : 'none';
-  cardDC4.style.display   = (mode==='ALL' || mode==='DC4') ? '' : 'none';
-  cardRectifier.style.display = (mode==='ALL' || mode==='RECTIFIER') ? '' : 'none';
-}
+function updateGraphVisibility() {
+    const val = document.getElementById('graphSelector').value;
 
+    // 1. Get references to all your chart cards
+    // Make sure these IDs match the IDs used in your HTML <div> tags
+    const cardStdV = document.getElementById('cardStdV');
+    const cardStd3 = document.getElementById('cardStd3');
+    const cardStd4 = document.getElementById('cardStd4');
+    const cardDC = document.getElementById('cardDC');     // This is usually DC5
+    const cardDC3 = document.getElementById('cardDC3');
+    const cardDC4 = document.getElementById('cardDC4');
+    const cardRecti = document.getElementById('cardRectifier');
+    const cardDCAvg = document.getElementById('cardDCAvg'); // Check if your DC Avg card has this ID!
+
+    // 2. Create a list of all cards to hide them all first
+    const allCards = [cardStdV, cardStd3, cardStd4, cardDC, cardDC3, cardDC4, cardRectifier, cardDCAvg];
+
+    // 3. Hide everything first
+    allCards.forEach(card => { if(card) card.style.display = 'none'; });
+
+    // 4. Show only the one selected
+    if (val === 'ALL') {
+        allCards.forEach(card => { if(card) card.style.display = 'block'; });
+    } else if (val === 'STDV') { if(cardStdV) cardStdV.style.display = 'block'; }
+    else if (val === 'STD3') { if(cardStd3) cardStd3.style.display = 'block'; }
+    else if (val === 'STD4') { if(cardStd4) cardStd4.style.display = 'block'; }
+    else if (val === 'DC5')  { if(cardDC)   cardDC.style.display = 'block'; }
+    else if (val === 'DC3')  { if(cardDC3)  cardDC3.style.display = 'block'; }
+    else if (val === 'DC4')  { if(cardDC4)  cardDC4.style.display = 'block'; }
+    else if (val === 'RECTIFIER') { if(cardRectifier) cardRectifier
+.style.display = 'block'; }
+    else if (val === 'DCAVG') { if(cardDCAvg) cardDCAvg.style.display = 'block'; }
+
+    // 5. Important: Re-render the data so the SVG actually draws in the visible box
+    renderSaved();
+}
 // load / delete / save
 function loadRecord(k){
   const r=saved[k];
@@ -1862,9 +2080,13 @@ function loadRecord(k){
 
 function deleteRecord(k){
   delete saved[k];
+  delete historyData[k]; // Delete history too
+  
+  localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
+  localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
+  
   renderSaved();
 }
-
 function saveCurrent(){
   const key=selElectrolyser.value;
   const inputs={
@@ -1883,54 +2105,90 @@ function saveCurrent(){
   rec.electrolyser=key;
   rec.recti=rectiMap[key];
   rec.plant=plantMap[rec.recti]||'Unknown';
+  
   const now = new Date();
-rec.shift = shiftSelectorEl ? shiftSelectorEl.value : '-';
-rec.date = now.toISOString().slice(0,10);
-rec.timestamp = now.toISOString();
-if (saved[key]) {
-  rec.prevStdV5 = saved[key].StdV5;
-  rec.prevDC5  = saved[key].DC5_kW;
-}
-  saved[key]=rec;
-  renderSaved();
-renderAllElectrolyserStatus();
-}
+  rec.shift = shiftSelectorEl ? shiftSelectorEl.value : '-';
+  rec.date = now.toISOString().slice(0,10);
+  rec.timestamp = now.toISOString();
 
+  // 1. CALCULATE TRENDS (Compare with previous latest)
+  if (saved[key]) {
+    rec.prevStdV5 = saved[key].StdV5;
+    rec.prevDC5  = saved[key].DC5_kW;
+  }
+
+  // 2. SAVE LATEST (For Dashboard/Graphs)
+  saved[key]=rec;
+
+  // 3. SAVE HISTORY (For Export - Limit 30)
+  if (!historyData[key]) historyData[key] = [];
+  
+  historyData[key].push(rec);
+
+  // Remove oldest if more than 30
+  if (historyData[key].length > 30) {
+    historyData[key].shift(); 
+  }
+
+  // 4. PERSIST TO STORAGE
+  localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
+  localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
+
+  renderSaved();
+  renderAllElectrolyserStatus();
+  
+  // Optional: Visual confirmation
+  alert(`Saved! (History count for ${key}: ${historyData[key].length}/30)`);
+}
 // buttons
 document.getElementById('saveBtn').addEventListener('click',saveCurrent);
 document.getElementById('loadBtn').addEventListener('click',()=>loadRecord(selElectrolyser.value));
 document.getElementById('deleteBtn').addEventListener('click',()=>deleteRecord(selElectrolyser.value));
 document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear all saved records?')){saved={};renderSaved();}});
 
-document.getElementById('exportCsvBtn').addEventListener('click',()=>{
-  const rows=[['Electrolyser','Rectifier','Plant','Generation','Elements','KA','TotalV','Conc','Temp','Eff%','CD','AvgV','StdV3','StdV4','StdV5','DC3_kW','DC4_kW','DC5_kW','K_Factor','K_Factor_5CD','Production_MT_day','SavedAt']];
-  Object.keys(saved).sort().forEach(k =>{
-    const base = saved[k];
-    const r = computeFromInputs({
-      generation: base.generation,
-      elements: base.elementCount,
-      KA: base.KA,
-      totalV: base.totalVoltage,
-      conc: base.cathConc,
-      temp: base.cathTemp,
-      eff: base.effPercent
-    });
-    rows.push([
-      k, base.recti, base.plant, r.generation, r.elementCount, r.KA, r.totalVoltage,
-      r.cathConc, r.cathTemp, r.effPercent,
-      r.CD.toFixed(4), r.avgV.toFixed(4),
-      r.StdV3.toFixed(4), r.StdV4.toFixed(4), r.StdV5.toFixed(4),
-      r.DC3_kW.toFixed(3), r.DC4_kW.toFixed(3), r.DC5_kW.toFixed(3),
-      r.K.toFixed(6), r.K5.toFixed(6), r.Production.toFixed(3),
-      base.timestamp
-    ]);
-  });
-  const csv=rows.map(r=>r.join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='electrolyser_report.csv';a.click();URL.revokeObjectURL(url);
-});
+document.getElementById('exportCsvBtn').addEventListener('click', () => {
+  const rows = [['Electrolyser', 'Rectifier', 'Plant', 'Date', 'Shift', 'KA', 'TotalV', 'StdV5', 'DC5_kW', 'Production', 'Timestamp']];
 
+  // Loop through all Electrolysers in history
+  Object.keys(historyData).sort().forEach(k => {
+    // Loop through ALL saved entries for this Electrolyser
+    historyData[k].forEach(base => {
+      // Re-calculate to ensure data consistency (optional, but safe)
+      const r = computeFromInputs({
+        generation: base.generation,
+        elements: base.elementCount,
+        KA: base.KA,
+        totalV: base.totalVoltage,
+        conc: base.cathConc,
+        temp: base.cathTemp,
+        eff: base.effPercent
+      });
+
+      rows.push([
+        k, 
+        base.recti, 
+        base.plant, 
+        base.date,
+        base.shift || '-',
+        r.KA, 
+        r.totalVoltage, 
+        r.StdV5.toFixed(4), 
+        r.DC5_kW.toFixed(3), 
+        r.Production.toFixed(3),
+        base.timestamp
+      ]);
+    });
+  });
+
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'electrolyser_history_30_entries.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
 // export graphs + summary to PDF (includes embedded logo in header if provided)
 document.getElementById('exportPdfBtn').addEventListener('click',()=>{
   const svg1 = stdvPlot.outerHTML;
@@ -2060,7 +2318,8 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
   <p class="meta">Date: ${dateStr || ''}</p>
   <p class="meta">Name: ${nameStr || ''}</p>
   <p class="meta">Plant filter: ${filter}</p>
-  <p class="note">Color code on StdV5/DC5: Green = best (lowest value), Red = worst (highest value).</p>
+<p class="meta">Shift: ${shiftSelectorEl ? shiftSelectorEl.value : '-'}</p>
+ <p class="note">Color code on StdV5/DC5: Green = best (lowest value), Red = worst (highest value).</p>
 
   <div class="block">
     <h2>Summary (StdV5 / DC@5 / Rectifier)</h2>
@@ -2125,16 +2384,16 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
   }
 
   let tableHtml = `
-    <table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-size:11px;width:100%;">
+    <table border="1" cellspacing="1" cellpadding="8" style="border-collapse:collapse;font-size:11px;width:100%;text-align: center;">
       <thead>
         <tr>
-          <th>El</th><th>Rectifier</th><th>Plant</th><th>Shift</th><th>Gen</th>
-          <th>Elem</th><th>KA</th><th>TotV</th>
+          <th>Rectifier</th><th>Plant</th><th>El</th><th>Gen</th>
+          <th>Element</th><th>KA</th><th>TotV</th>
           <th>Conc</th><th>Temp</th><th>Eff%</th>
           <th>CD</th><th>AvgV</th>
-          <th>StdV3</th><th>StdV4</th><th>StdV5</th>
-          <th>DC@3 (kW)</th><th>DC@4 (kW)</th><th>DC@5 (kW)</th>
-          <th>K-Factor</th><th>K @5CD</th>
+          <th>StdV5CD</th>
+          <th>DCP@5CD</th>
+          <th>K-Factor</th><th>K-F@5CD</th>
           <th>Prod (MT/d)</th><th>Saved At</th>
         </tr>
       </thead>
@@ -2153,10 +2412,10 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
     });
     tableHtml += `
       <tr>
-        <td>${k}</td>
+	
         <td>${base.recti}</td>
         <td>${base.plant}</td>
-<td>${base.shift || '-'}</td>
+	<td>${k}</td>
         <td>${r.generation}</td>
         <td>${r.elementCount}</td>
         <td>${r.KA}</td>
@@ -2164,17 +2423,13 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
         <td>${r.cathConc}</td>
         <td>${r.cathTemp}</td>
         <td>${r.effPercent}</td>
-        <td>${r.CD.toFixed(4)}</td>
-        <td>${r.avgV.toFixed(4)}</td>
-        <td>${r.StdV3.toFixed(4)}</td>
-        <td>${r.StdV4.toFixed(4)}</td>
-        <td>${r.StdV5.toFixed(4)}</td>
-        <td>${r.DC3_kW.toFixed(3)}</td>
-        <td>${r.DC4_kW.toFixed(3)}</td>
-        <td>${r.DC5_kW.toFixed(3)}</td>
-        <td>${r.K.toFixed(6)}</td>
-        <td>${r.K5.toFixed(6)}</td>
-        <td>${r.Production.toFixed(3)}</td>
+        <td>${r.CD.toFixed(2)}</td>
+        <td>${r.avgV.toFixed(2)}</td>
+        <td>${r.StdV5.toFixed(2)}</td>
+        <td>${r.DC5_kW.toFixed(0)}</td>
+        <td>${r.K.toFixed(3)}</td>
+        <td>${r.K5.toFixed(3)}</td>
+        <td>${r.Production.toFixed(1)}</td>
         <td>${base.timestamp}</td>
       </tr>
     `;
@@ -2210,13 +2465,14 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
   <div class="header">
     ${pdfLogoHtml}
     <div>
-      <h1 style="margin:0;">Electrolyser Data Report (All Saved Cells)</h1>
-      <p style="margin:4px 0 0 0;font-size:13px;">Prepared by <strong>Akshay Aghera (CSP - Process)</strong></p>
-    </div>
+      <h1 style="margin:0;">Electrolyser Data Report</h1>
+          </div>
   </div>
 
   <p class="meta">Date: ${dateStr}</p>
   <p class="meta">Name: ${nameStr}</p>
+<p class="meta">Shift: ${shiftSelectorEl ? shiftSelectorEl.value : '-'}</p>
+
 
   <div class="block">
     ${tableHtml}
@@ -2230,11 +2486,6 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
 // live compute
 [ generationEl,elementsEl,kaEl,totalVEl,effEl,concEl,tempEl ].forEach(el=>el.addEventListener('input',computeLive));
 plantFilterEl.addEventListener('change', renderSaved);
-graphSelectorEl.addEventListener('change', ()=>{
-  if(modeSelector.value === 'EXPERT'){
-    updateGraphVisibility();
-  }
-});
 
 selElectrolyser.addEventListener('change', () => applyDefaultsForElectrolyser(selElectrolyser.value));
 // =====================
@@ -2244,27 +2495,19 @@ const modeSelector = document.getElementById('modeSelector');
 
 function applyMode(){
   const mode = modeSelector.value;
-
-  // Hide expert-only sections
   document.querySelectorAll('.expert-only').forEach(el=>{
     el.style.display = (mode === 'EXPERT') ? '' : 'none';
   });
 
-  // Force-hide all graphs in SIMPLE mode
   if(mode === 'SIMPLE'){
-    [
-      cardStdV, cardStd3, cardStd4,
-      cardDC, cardDC3, cardDC4,
-      cardRecti
-    ].forEach(card=>{
-      if(card) card.style.display = 'none';
+    // Hide everything in Simple mode
+    [cardStdV, cardStd3, cardStd4, cardDC, cardDC3, cardDC4, cardDCAvg, cardRectifier].forEach(c => {
+       if(c) c.style.display = 'none';
     });
   } else {
-    // EXPERT mode → allow graph selector to work
-    updateGraphVisibility();
+   
   }
 }
-
 // Mode change handler
 modeSelector.addEventListener('change', applyMode);
 
@@ -2275,8 +2518,10 @@ function init(){
   applyDefaultsForElectrolyser(selElectrolyser.value);
   renderSaved();
 renderAllElectrolyserStatus();
+updatePlantHealth();
   applyMode(); // 👈 MUST be last
 }
+
 init();
 
 // expose for table buttons
@@ -2292,7 +2537,9 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('SW registration failed', err));
   });
 }
+
+// Add this at the bottom of your script
+document.getElementById('btnGenerateGraph').addEventListener('click', updateGraphVisibility);
 </script>
 </body>
 </html>
-
