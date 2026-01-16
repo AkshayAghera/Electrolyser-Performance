@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ems-v8'; // Increment this whenever you change index.html
+const CACHE_NAME = 'ems-v9'; // Increment this whenever you change index.html
 const ASSETS = [
   './',
   './index.html',
