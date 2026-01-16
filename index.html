@@ -1922,7 +1922,7 @@ function drawSingleLine(svgElem, yLabelText, data, strokeColor){
   svgElem.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*54);
   const H=300;
   svgElem.setAttribute('width',W);
   svgElem.setAttribute('height',H);
@@ -2014,7 +2014,7 @@ function drawStdV5Plot(data){
   stdvPlot.innerHTML='';
   if(!data.length) return;
 
-  const W = Math.max(550, data.length*25);
+  const W = Math.max(550, data.length*54);
   const H = 340;
   stdvPlot.setAttribute('width', W);
   stdvPlot.setAttribute('height', H);
@@ -2077,7 +2077,7 @@ function drawDC5Plot(data){
   dcPlot.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*25);
+  const W=Math.max(550,data.length*54);
   const H=340;
   dcPlot.setAttribute('width',W);
   dcPlot.setAttribute('height',H);
@@ -2162,7 +2162,7 @@ function drawRectiPlot(buckets){
   const maxAvg=Math.max(...valid.map(a=>a.avg));
   const minAvg=Math.min(...valid.map(a=>a.avg));
 
-  const W= Math.max(550, arr.length*90);
+  const W= Math.max(550, arr.length*180);
   const H=340;
   rectiPlot.setAttribute('width',W);
   rectiPlot.setAttribute('height',H);
@@ -2335,15 +2335,21 @@ function saveCurrent(){
     historyData[key].shift(); 
   }
 
-  // 4. PERSIST TO STORAGE
-  localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
-  localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
+ // 4. PERSIST TO STORAGE
+    localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
+    localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
 
-  renderSaved();
-  renderAllElectrolyserStatus();
-  
-  // Optional: Visual confirmation
-  alert(`Saved! (History count for ${key}: ${historyData[key].length}/30)`);
+    // FORCE SYNC FOR MOBILE
+    saved = JSON.parse(localStorage.getItem('electrolyser_saved_v1') || '{}');
+
+    // 5. RE-RENDER EVERYTHING
+    renderSaved();
+    renderAllElectrolyserStatus();
+    updatePlantHealth(); // Ensure this is called to update the 1-19 matrix
+
+    // Better Mobile Notification
+    console.log("Data saved successfully");
+    alert(`SAVED: Unit ${key} has been added to the dashboard.`);
 }
 // buttons
 // 1. SAVE BUTTON
@@ -2579,7 +2585,6 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
     ${pdfLogoHtml}
     <div>
       <h1 style="margin:0;">Electrolyser Performance Graphs</h1>
-      <p style="margin:4px 0 0 0;font-size:13px;">Prepared by <strong>Akshay Aghera (CSP - Process)</strong></p>
     </div>
   </div>
 
@@ -2781,15 +2786,22 @@ modeSelector.addEventListener('change', applyMode);
 
 // init
 function init(){
+  // Force load from storage on startup
+  const stored = localStorage.getItem('electrolyser_saved_v1');
+  if(stored) {
+    saved = JSON.parse(stored);
+  }
+
   initDateSelectors();
   selElectrolyser.value = electrolysers[0];
   applyDefaultsForElectrolyser(selElectrolyser.value);
+  
+  // Refresh UI
   renderSaved();
-renderAllElectrolyserStatus();
-updatePlantHealth();
-  applyMode(); // 👈 MUST be last
+  renderAllElectrolyserStatus();
+  updatePlantHealth();
+  applyMode(); 
 }
-
 init();
 
 // expose for table buttons
@@ -2820,4 +2832,3 @@ document.getElementById('btnGenerateGraph').addEventListener('click', updateGrap
 </script>
 </body>
 </html>
-
