@@ -2312,9 +2312,21 @@ function saveCurrent(){
   rec.plant=plantMap[rec.recti]||'Unknown';
   
   const now = new Date();
+  const indianDate = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(now).split('/').reverse().join('-'); // Returns YYYY-MM-DD
+
+  const indianTimestamp = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: true
+  }).format(now);
+
   rec.shift = shiftSelectorEl ? shiftSelectorEl.value : '-';
-  rec.date = now.toISOString().slice(0,10);
-  rec.timestamp = now.toISOString();
+  rec.date = indianDate;
+  rec.timestamp = indianTimestamp;
 
   // 1. CALCULATE TRENDS (Compare with previous latest)
   if (saved[key]) {
@@ -2344,6 +2356,7 @@ function saveCurrent(){
   
   // Optional: Visual confirmation
   alert(`Saved! (History count for ${key}: ${historyData[key].length}/30)`);
+
 }
 // buttons
 // 1. SAVE BUTTON
@@ -2641,11 +2654,16 @@ document.getElementById('exportDataPdfBtn').addEventListener('click',()=>{
     const dd = String(day).padStart(2,'0');
     const mm = String(month).padStart(2,'0');
     dateStr = `${dd}-${mm}-${year}`;
-  } else {
+ } else {
     const today = new Date();
-    dateStr = today.toISOString().slice(0,10);
-  }
-
+    // Use Indian Locale and Kolkata Timezone to prevent UTC offset errors
+    dateStr = today.toLocaleDateString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(/\//g, '-'); 
+}
   const keysAll = Object.keys(saved).sort();
   if(keysAll.length===0){
     alert('No data to export.');
