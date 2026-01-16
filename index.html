@@ -2335,21 +2335,15 @@ function saveCurrent(){
     historyData[key].shift(); 
   }
 
- // 4. PERSIST TO STORAGE
-    localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
-    localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
+  // 4. PERSIST TO STORAGE
+  localStorage.setItem('electrolyser_saved_v1', JSON.stringify(saved));
+  localStorage.setItem('electrolyser_history_v1', JSON.stringify(historyData));
 
-    // FORCE SYNC FOR MOBILE
-    saved = JSON.parse(localStorage.getItem('electrolyser_saved_v1') || '{}');
-
-    // 5. RE-RENDER EVERYTHING
-    renderSaved();
-    renderAllElectrolyserStatus();
-    updatePlantHealth(); // Ensure this is called to update the 1-19 matrix
-
-    // Better Mobile Notification
-    console.log("Data saved successfully");
-    alert(`SAVED: Unit ${key} has been added to the dashboard.`);
+  renderSaved();
+  renderAllElectrolyserStatus();
+  
+  // Optional: Visual confirmation
+  alert(`Saved! (History count for ${key}: ${historyData[key].length}/30)`);
 }
 // buttons
 // 1. SAVE BUTTON
@@ -2786,22 +2780,15 @@ modeSelector.addEventListener('change', applyMode);
 
 // init
 function init(){
-  // Force load from storage on startup
-  const stored = localStorage.getItem('electrolyser_saved_v1');
-  if(stored) {
-    saved = JSON.parse(stored);
-  }
-
   initDateSelectors();
   selElectrolyser.value = electrolysers[0];
   applyDefaultsForElectrolyser(selElectrolyser.value);
-  
-  // Refresh UI
   renderSaved();
-  renderAllElectrolyserStatus();
-  updatePlantHealth();
-  applyMode(); 
+renderAllElectrolyserStatus();
+updatePlantHealth();
+  applyMode(); // 👈 MUST be last
 }
+
 init();
 
 // expose for table buttons
