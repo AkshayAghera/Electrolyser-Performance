@@ -1922,7 +1922,7 @@ function drawSingleLine(svgElem, yLabelText, data, strokeColor){
   svgElem.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*54);
+  const W=Math.max(550,data.length*25);
   const H=300;
   svgElem.setAttribute('width',W);
   svgElem.setAttribute('height',H);
@@ -2014,7 +2014,7 @@ function drawStdV5Plot(data){
   stdvPlot.innerHTML='';
   if(!data.length) return;
 
-  const W = Math.max(550, data.length*54);
+  const W = Math.max(550, data.length*25);
   const H = 340;
   stdvPlot.setAttribute('width', W);
   stdvPlot.setAttribute('height', H);
@@ -2077,7 +2077,7 @@ function drawDC5Plot(data){
   dcPlot.innerHTML='';
   if(!data.length) return;
 
-  const W=Math.max(550,data.length*54);
+  const W=Math.max(550,data.length*25);
   const H=340;
   dcPlot.setAttribute('width',W);
   dcPlot.setAttribute('height',H);
@@ -2162,7 +2162,7 @@ function drawRectiPlot(buckets){
   const maxAvg=Math.max(...valid.map(a=>a.avg));
   const minAvg=Math.min(...valid.map(a=>a.avg));
 
-  const W= Math.max(550, arr.length*180);
+  const W= Math.max(550, arr.length*90);
   const H=340;
   rectiPlot.setAttribute('width',W);
   rectiPlot.setAttribute('height',H);
@@ -2820,3 +2820,4 @@ document.getElementById('btnGenerateGraph').addEventListener('click', updateGrap
 </script>
 </body>
 </html>
+
