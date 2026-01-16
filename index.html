@@ -2469,19 +2469,21 @@ document.getElementById('exportPdfBtn').addEventListener('click',()=>{
   const nameStr = operatorNameEl.value || 'N/A';
   const filter = plantFilterEl.value;
 
-  const day = parseInt(reportDayEl.value,10);
+const day = parseInt(reportDayEl.value,10);
   const month = parseInt(reportMonthEl.value,10);
   const year = parseInt(reportYearEl.value,10);
   let dateStr;
+
   if(!isNaN(day) && !isNaN(month) && !isNaN(year)){
     const dd = String(day).padStart(2,'0');
     const mm = String(month).padStart(2,'0');
     dateStr = `${dd}-${mm}-${year}`;
   } else {
+    // FIX: Get current date in Indian format instead of ISO
     const today = new Date();
-    dateStr = today.toISOString().slice(0,10);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Kolkata' };
+    dateStr = today.toLocaleDateString('en-IN', options).replace(/\//g, '-');
   }
-
   const keysAll = Object.keys(saved).sort();
   const keys = keysAll.filter(k=>{
     if(filter==='ALL') return true;
